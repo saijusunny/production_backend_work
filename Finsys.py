@@ -14760,25 +14760,19 @@ def main_sign_in():
                         prd_ls1=Label(frm_mast1, text="Name of Product : ",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
                         win_inv1 = frm_mast1.create_window(750, 30, anchor="center", window=prd_ls1)
 
-                        prd_ls2=Label(frm_mast1, text="Godown : G5",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1000, 30, anchor="center", window=prd_ls2)
+                        
                         
                         prd_ls3=Label(frm_mast1, text="Quantity : ",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
                         win_inv1 = frm_mast1.create_window(1250, 30, anchor="center", window=prd_ls3)
 
-                        prd_ls4=Label(frm_mast1, text="% Cost  Allocation : 100%",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(500, 90, anchor="center", window=prd_ls4)
-
-                        prd_ls5=Label(frm_mast1, text="Batch Name : G5",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(850,90, anchor="center", window=prd_ls5)
 
                         
                         prd_ls6=Label(frm_mast1, text="MFD Date : ",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1200,90, anchor="center", window=prd_ls6)
+                        win_inv1 = frm_mast1.create_window(750,90, anchor="center", window=prd_ls6)
 
                         
                         prd_ls7=Label(frm_mast1, text="Expiry Date : ",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1450,90, anchor="center", window=prd_ls7)
+                        win_inv1 = frm_mast1.create_window(1250,90, anchor="center", window=prd_ls7)
 
 
                         frm_mast1.create_line(120, 120, 1870, 120,fill="gray" )#topLine hr
@@ -14795,8 +14789,8 @@ def main_sign_in():
 
                         frm_mast1.create_line(120, 120, 120, 950,fill="gray" )#topLine right vr
                         # table Inner 
-                        prd_ls6=Label(frm_mast1, text="Components (Consumption)",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(550,140, anchor="center", window=prd_ls6)
+                        prd_ls123=Label(frm_mast1, text="Components (Consumption)",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
+                        win_inv1 = frm_mast1.create_window(550,140, anchor="center", window=prd_ls123)
 
                         prd_ls8=Label(frm_mast1, text="Co Product/By-Product/Scrap",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
                         win_inv1 = frm_mast1.create_window(1435,140, anchor="center", window=prd_ls8)
@@ -14818,16 +14812,74 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(900,195, anchor="center", window=prd_ls14)
 
                         # values Section 
+
+                        cmb_slt='select pname from producttable where cid_id=%s'
+                        cmb_slt_vald=(dtl_cmp_pro[0],)
+                        fbcursor.execute(cmb_slt, cmb_slt_vald)
+                        tb_slt=fbcursor.fetchall()
+
+                        prd_slct=[]
+                        for i in tb_slt:
+                            prd_slct.append(i[0])
+
+                        def sltd_fun_r1(event):
+                            cmb_slt_crt_r1='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r1_vald=(dtl_cmp_pro[0],cmb1.get(),)
+                            fbcursor.execute(cmb_slt_crt_r1, cmb_slt_crt_r1_vald)
+                            tb_slt_r1=fbcursor.fetchone()
+
+                            prd_r1c2.delete(0,END)
+                            prd_r1c2.insert(0,str(tb_slt_r1[2]))
+
+                            prd_r1c4.delete(0,END)
+                            prd_r1c4.insert(0,"$"+str(tb_slt_r1[3]))
+
+                            spc_val=prd_r1c3.get()
+                            prd_r1c5.delete(0,END)
+                            prd_r1c5.insert(0,str(float(tb_slt_r1[3])*float(spc_val)))
+
+                            prd_r16c5.delete(0,END)
+                            prd_r16c5.insert(0,str(float(tb_slt_r1[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=prd_r1c3.get()
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=prd_r1c5.get()
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+                            
+
+                        def spin_amnt_prd_r1():
+                            cmb_slt_crt_r1='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r1_vald=(dtl_cmp_pro[0],cmb1.get(),)
+                            fbcursor.execute(cmb_slt_crt_r1, cmb_slt_crt_r1_vald)
+                            tb_slt_r1=fbcursor.fetchone()
+
+                            spc_val=prd_r1c3.get()
+                            prd_r1c5.delete(0,END)
+                            prd_r1c5.insert(0,str(float(tb_slt_r1[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=prd_r1c3.get()
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=prd_r1c5.get()
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmb1= StringVar()
                         prd_r1c1 = ttk.Combobox(frm_mast1,textvariable=cmb1,width=18,font=('Calibri 16'))
-                        prd_r1c1['values'] = ('Edit','Delete')
+                        prd_r1c1['values'] = prd_slct
+                        prd_r1c1.bind('<<ComboboxSelected>>',sltd_fun_r1)
                         win_inv1 = frm_mast1.create_window(120, 235, anchor="nw", window=prd_r1c1, tag=("cmb_action"))
 
 
                         prd_r1c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,235, anchor="nw", window=prd_r1c2,)
 
-                        prd_r1c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r1c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r1,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 250, anchor="center", window=prd_r1c3,)
 
                         prd_r1c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14837,16 +14889,61 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,235, anchor="nw", window=prd_r1c5,)
 
                         #----------------------------------------------------------------------row 2
+
+                        def sltd_fun_r2(event):
+                            cmb_slt_crt_r2='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r2_vald=(dtl_cmp_pro[0],cmbr2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r2, cmb_slt_crt_r2_vald)
+                            tb_slt_r2=fbcursor.fetchone()
+
+                            prd_r2c2.delete(0,END)
+                            prd_r2c2.insert(0,str(tb_slt_r2[2]))
+
+                            prd_r2c4.delete(0,END)
+                            prd_r2c4.insert(0,"$"+str(tb_slt_r2[3]))
+
+                            spc_val=prd_r2c3.get()
+                            prd_r2c5.delete(0,END)
+                            prd_r2c5.insert(0,str(float(tb_slt_r2[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_r2():
+                            cmb_slt_crt_r2='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r2_vald=(dtl_cmp_pro[0],cmbr2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r2, cmb_slt_crt_r2_vald)
+                            tb_slt_r2=fbcursor.fetchone()
+
+                            spc_val=prd_r2c3.get()
+                            prd_r2c5.delete(0,END)
+                            prd_r2c5.insert(0,str(float(tb_slt_r2[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr2= StringVar()
                         prd_r2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr2,width=18,font=('Calibri 16'))
-                        prd_r2c1['values'] = ('Edit','Delete')
+                        prd_r2c1['values'] = prd_slct
+                        prd_r2c1.bind('<<ComboboxSelected>>',sltd_fun_r2)
                         win_inv1 = frm_mast1.create_window(120, 280, anchor="nw", window=prd_r2c1, tag=("cmb_action"))
 
 
                         prd_r2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,280, anchor="nw", window=prd_r2c2,)
 
-                        prd_r2c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r2c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r2,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 295, anchor="center", window=prd_r2c3,)
 
                         prd_r2c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14856,16 +14953,60 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,280, anchor="nw", window=prd_r2c5,)
 
                         #----------------------------------------------------------------------row 
+                        def sltd_fun_r3(event):
+                            cmb_slt_crt_r3='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r3_vald=(dtl_cmp_pro[0],cmbr3.get(),)
+                            fbcursor.execute(cmb_slt_crt_r3, cmb_slt_crt_r3_vald)
+                            tb_slt_r3=fbcursor.fetchone()
+
+                            prd_r3c2.delete(0,END)
+                            prd_r3c2.insert(0,str(tb_slt_r3[2]))
+
+                            prd_r3c4.delete(0,END)
+                            prd_r3c4.insert(0,"$"+str(tb_slt_r3[3]))
+
+                            spc_val=prd_r3c3.get()
+                            prd_r3c5.delete(0,END)
+                            prd_r3c5.insert(0,str(float(tb_slt_r3[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_r3():
+                            cmb_slt_crt_r3='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r3_vald=(dtl_cmp_pro[0],cmbr3.get(),)
+                            fbcursor.execute(cmb_slt_crt_r3, cmb_slt_crt_r3_vald)
+                            tb_slt_r3=fbcursor.fetchone()
+
+                            spc_val=prd_r3c3.get()
+                            prd_r3c5.delete(0,END)
+                            prd_r3c5.insert(0,str(float(tb_slt_r3[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr3= StringVar()
                         prd_r3c1 = ttk.Combobox(frm_mast1,textvariable=cmbr3,width=18,font=('Calibri 16'))
-                        prd_r3c1['values'] = ('Edit','Delete')
+                        prd_r3c1['values'] = prd_slct
+                        prd_r3c1.bind('<<ComboboxSelected>>',sltd_fun_r3)
                         win_inv1 = frm_mast1.create_window(120, 325, anchor="nw", window=prd_r3c1, tag=("cmb_action"))
 
 
                         prd_r3c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,325, anchor="nw", window=prd_r3c2,)
 
-                        prd_r3c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r3c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r3,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 340, anchor="center", window=prd_r3c3,)
 
                         prd_r3c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14875,16 +15016,62 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,325, anchor="nw", window=prd_r3c5,)
 
                         #----------------------------------------------------------------------row 4
+
+                        def sltd_fun_r4(event):
+                            cmb_slt_crt_r4='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r4_vald=(dtl_cmp_pro[0],cmbr4.get(),)
+                            fbcursor.execute(cmb_slt_crt_r4, cmb_slt_crt_r4_vald)
+                            tb_slt_r4=fbcursor.fetchone()
+
+                            prd_r4c2.delete(0,END)
+                            prd_r4c2.insert(0,str(tb_slt_r4[2]))
+
+                            prd_r4c4.delete(0,END)
+                            prd_r4c4.insert(0,"$"+str(tb_slt_r4[3]))
+
+                            spc_val=prd_r4c3.get()
+                            prd_r4c5.delete(0,END)
+                            prd_r4c5.insert(0,str(float(tb_slt_r4[3])*float(spc_val)))
+                            
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_r4():
+                            cmb_slt_crt_r4='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r4_vald=(dtl_cmp_pro[0],cmbr4.get(),)
+                            fbcursor.execute(cmb_slt_crt_r4, cmb_slt_crt_r4_vald)
+                            tb_slt_r4=fbcursor.fetchone()
+
+                            spc_val=prd_r4c3.get()
+                            prd_r4c5.delete(0,END)
+                            prd_r4c5.insert(0,str(float(tb_slt_r4[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr4= StringVar()
                         prd_r4c1 = ttk.Combobox(frm_mast1,textvariable=cmbr4,width=18,font=('Calibri 16'))
-                        prd_r4c1['values'] = ('Edit','Delete')
+                        prd_r4c1['values'] = prd_slct
+                        prd_r4c1.bind('<<ComboboxSelected>>',sltd_fun_r4)
                         win_inv1 = frm_mast1.create_window(120, 370, anchor="nw", window=prd_r4c1, tag=("cmb_action"))
 
 
                         prd_r4c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,370, anchor="nw", window=prd_r4c2,)
 
-                        prd_r4c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r4c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r4,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 385, anchor="center", window=prd_r4c3,)
 
                         prd_r4c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14894,16 +15081,60 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,370, anchor="nw", window=prd_r4c5,)
 
                         #----------------------------------------------------------------------row 5
+                        def sltd_fun_r5(event):
+                            cmb_slt_crt_r5='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r5_vald=(dtl_cmp_pro[0],cmbr5.get(),)
+                            fbcursor.execute(cmb_slt_crt_r5, cmb_slt_crt_r5_vald)
+                            tb_slt_r5=fbcursor.fetchone()
+
+                            prd_r5c2.delete(0,END)
+                            prd_r5c2.insert(0,str(tb_slt_r5[2]))
+
+                            prd_r5c4.delete(0,END)
+                            prd_r5c4.insert(0,"$"+str(tb_slt_r5[3]))
+
+                            spc_val=prd_r5c3.get()
+                            prd_r5c5.delete(0,END)
+                            prd_r5c5.insert(0,str(float(tb_slt_r5[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_r5():
+                            cmb_slt_crt_r5='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r5_vald=(dtl_cmp_pro[0],cmbr5.get(),)
+                            fbcursor.execute(cmb_slt_crt_r5, cmb_slt_crt_r5_vald)
+                            tb_slt_r5=fbcursor.fetchone()
+
+                            spc_val=prd_r5c3.get()
+                            prd_r5c5.delete(0,END)
+                            prd_r5c5.insert(0,str(float(tb_slt_r5[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr5= StringVar()
                         prd_r5c1 = ttk.Combobox(frm_mast1,textvariable=cmbr5,width=18,font=('Calibri 16'))
-                        prd_r5c1['values'] = ('Edit','Delete')
+                        prd_r5c1['values'] = prd_slct
+                        prd_r5c1.bind('<<ComboboxSelected>>',sltd_fun_r5)
                         win_inv1 = frm_mast1.create_window(120, 415, anchor="nw", window=prd_r5c1, tag=("cmb_action"))
 
 
                         prd_r5c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,415, anchor="nw", window=prd_r5c2,)
 
-                        prd_r5c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r5c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r5,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 430, anchor="center", window=prd_r5c3,)
 
                         prd_r5c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14913,16 +15144,60 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,415, anchor="nw", window=prd_r5c5,)
 
                         #----------------------------------------------------------------------row 6
+                        def sltd_fun_r6(event):
+                            cmb_slt_crt_r6='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r6_vald=(dtl_cmp_pro[0],cmbr6.get(),)
+                            fbcursor.execute(cmb_slt_crt_r6, cmb_slt_crt_r6_vald)
+                            tb_slt_r6=fbcursor.fetchone()
+
+                            prd_r6c2.delete(0,END)
+                            prd_r6c2.insert(0,str(tb_slt_r6[2]))
+
+                            prd_r6c4.delete(0,END)
+                            prd_r6c4.insert(0,"$"+str(tb_slt_r6[3]))
+
+                            spc_val=prd_r6c3.get()
+                            prd_r6c5.delete(0,END)
+                            prd_r6c5.insert(0,str(float(tb_slt_r6[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_r6():
+                            cmb_slt_crt_r6='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r6_vald=(dtl_cmp_pro[0],cmbr6.get(),)
+                            fbcursor.execute(cmb_slt_crt_r6, cmb_slt_crt_r6_vald)
+                            tb_slt_r6=fbcursor.fetchone()
+
+                            spc_val=prd_r6c3.get()
+                            prd_r6c5.delete(0,END)
+                            prd_r6c5.insert(0,str(float(tb_slt_r6[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr6= StringVar()
                         prd_r6c1 = ttk.Combobox(frm_mast1,textvariable=cmbr6,width=18,font=('Calibri 16'))
-                        prd_r6c1['values'] = ('Edit','Delete')
+                        prd_r6c1['values'] = prd_slct
+                        prd_r6c1.bind('<<ComboboxSelected>>',sltd_fun_r6)
                         win_inv1 = frm_mast1.create_window(120, 460, anchor="nw", window=prd_r6c1, tag=("cmb_action"))
 
 
                         prd_r6c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,460, anchor="nw", window=prd_r6c2,)
 
-                        prd_r6c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r6c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r6,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 475, anchor="center", window=prd_r6c3,)
 
                         prd_r6c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14932,16 +15207,60 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,460, anchor="nw", window=prd_r6c5,)
 
                         #----------------------------------------------------------------------row 7
+                        def sltd_fun_r7(event):
+                            cmb_slt_crt_r7='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r7_vald=(dtl_cmp_pro[0],cmbr7.get(),)
+                            fbcursor.execute(cmb_slt_crt_r7, cmb_slt_crt_r7_vald)
+                            tb_slt_r7=fbcursor.fetchone()
+
+                            prd_r7c2.delete(0,END)
+                            prd_r7c2.insert(0,str(tb_slt_r7[2]))
+
+                            prd_r7c4.delete(0,END)
+                            prd_r7c4.insert(0,"$"+str(tb_slt_r7[3]))
+
+                            spc_val=prd_r7c3.get()
+                            prd_r7c5.delete(0,END)
+                            prd_r7c5.insert(0,str(float(tb_slt_r7[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_r7():
+                            cmb_slt_crt_r7='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r7_vald=(dtl_cmp_pro[0],cmbr7.get(),)
+                            fbcursor.execute(cmb_slt_crt_r7, cmb_slt_crt_r7_vald)
+                            tb_slt_r7=fbcursor.fetchone()
+
+                            spc_val=prd_r7c3.get()
+                            prd_r7c5.delete(0,END)
+                            prd_r7c5.insert(0,str(float(tb_slt_r7[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr7= StringVar()
                         prd_r7c1 = ttk.Combobox(frm_mast1,textvariable=cmbr7,width=18,font=('Calibri 16'))
-                        prd_r7c1['values'] = ('Edit','Delete')
+                        prd_r7c1['values'] = prd_slct
+                        prd_r7c1.bind('<<ComboboxSelected>>',sltd_fun_r7)
                         win_inv1 = frm_mast1.create_window(120, 505, anchor="nw", window=prd_r7c1, tag=("cmb_action"))
 
 
                         prd_r7c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,505, anchor="nw", window=prd_r7c2,)
 
-                        prd_r7c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r7c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r7,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 520, anchor="center", window=prd_r7c3,)
 
                         prd_r7c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14951,16 +15270,61 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,505, anchor="nw", window=prd_r7c5,)
 
                         #----------------------------------------------------------------------row 8
+                        def sltd_fun_r8(event):
+                            cmb_slt_crt_r8='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r8_vald=(dtl_cmp_pro[0],cmbr8.get(),)
+                            fbcursor.execute(cmb_slt_crt_r8, cmb_slt_crt_r8_vald)
+                            tb_slt_r8=fbcursor.fetchone()
+
+                            prd_r8c2.delete(0,END)
+                            prd_r8c2.insert(0,str(tb_slt_r8[2]))
+
+                            prd_r8c4.delete(0,END)
+                            prd_r8c4.insert(0,"$"+str(tb_slt_r8[3]))
+
+                            spc_val=prd_r8c3.get()
+                            prd_r8c5.delete(0,END)
+                            prd_r8c5.insert(0,str(float(tb_slt_r8[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_r8():
+                            cmb_slt_crt_r8='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r8_vald=(dtl_cmp_pro[0],cmbr8.get(),)
+                            fbcursor.execute(cmb_slt_crt_r8, cmb_slt_crt_r8_vald)
+                            tb_slt_r8=fbcursor.fetchone()
+
+                            spc_val=prd_r8c3.get()
+                            prd_r8c5.delete(0,END)
+                            prd_r8c5.insert(0,str(float(tb_slt_r8[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr8= StringVar()
                         prd_r8c1 = ttk.Combobox(frm_mast1,textvariable=cmbr8,width=18,font=('Calibri 16'))
-                        prd_r8c1['values'] = ('Edit','Delete')
+                        prd_r8c1['values'] = prd_slct
+                        prd_r8c1.bind('<<ComboboxSelected>>',sltd_fun_r8)
                         win_inv1 = frm_mast1.create_window(120, 550, anchor="nw", window=prd_r8c1, tag=("cmb_action"))
 
 
                         prd_r8c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,550, anchor="nw", window=prd_r8c2,)
 
-                        prd_r8c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r8c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r8,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 565, anchor="center", window=prd_r8c3,)
 
                         prd_r8c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14970,16 +15334,61 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,550, anchor="nw", window=prd_r8c5,)
 
                         #----------------------------------------------------------------------row 9
+                        def sltd_fun_r9(event):
+                            cmb_slt_crt_r9='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r9_vald=(dtl_cmp_pro[0],cmbr9.get(),)
+                            fbcursor.execute(cmb_slt_crt_r9, cmb_slt_crt_r9_vald)
+                            tb_slt_r9=fbcursor.fetchone()
+
+                            prd_r9c2.delete(0,END)
+                            prd_r9c2.insert(0,str(tb_slt_r9[2]))
+
+                            prd_r9c4.delete(0,END)
+                            prd_r9c4.insert(0,"$"+str(tb_slt_r9[3]))
+
+                            spc_val=prd_r9c3.get()
+                            prd_r9c5.delete(0,END)
+                            prd_r9c5.insert(0,str(float(tb_slt_r9[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_r9():
+                            cmb_slt_crt_r9='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r9_vald=(dtl_cmp_pro[0],cmbr9.get(),)
+                            fbcursor.execute(cmb_slt_crt_r9, cmb_slt_crt_r9_vald)
+                            tb_slt_r9=fbcursor.fetchone()
+
+                            spc_val=prd_r9c3.get()
+                            prd_r9c5.delete(0,END)
+                            prd_r9c5.insert(0,str(float(tb_slt_r9[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr9= StringVar()
                         prd_r9c1 = ttk.Combobox(frm_mast1,textvariable=cmbr9,width=18,font=('Calibri 16'))
-                        prd_r9c1['values'] = ('Edit','Delete')
+                        prd_r9c1['values'] = prd_slct
+                        prd_r9c1.bind('<<ComboboxSelected>>',sltd_fun_r9)
                         win_inv1 = frm_mast1.create_window(120, 595, anchor="nw", window=prd_r9c1, tag=("cmb_action"))
 
 
                         prd_r9c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,595, anchor="nw", window=prd_r9c2,)
 
-                        prd_r9c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r9c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r9,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 610, anchor="center", window=prd_r9c3,)
 
                         prd_r9c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -14989,16 +15398,60 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,595, anchor="nw", window=prd_r9c5,)
 
                         #----------------------------------------------------------------------row 10
+                        def sltd_fun_r10(event):
+                            cmb_slt_crt_r10='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r10_vald=(dtl_cmp_pro[0],cmbr10.get(),)
+                            fbcursor.execute(cmb_slt_crt_r10, cmb_slt_crt_r10_vald)
+                            tb_slt_r10=fbcursor.fetchone()
+
+                            prd_r10c2.delete(0,END)
+                            prd_r10c2.insert(0,str(tb_slt_r10[2]))
+
+                            prd_r10c4.delete(0,END)
+                            prd_r10c4.insert(0,"$"+str(tb_slt_r10[3]))
+
+                            spc_val=prd_r10c3.get()
+                            prd_r10c5.delete(0,END)
+                            prd_r10c5.insert(0,str(float(tb_slt_r10[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_r10():
+                            cmb_slt_crt_r10='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r10_vald=(dtl_cmp_pro[0],cmbr10.get(),)
+                            fbcursor.execute(cmb_slt_crt_r10, cmb_slt_crt_r10_vald)
+                            tb_slt_r10=fbcursor.fetchone()
+
+                            spc_val=prd_r10c3.get()
+                            prd_r10c5.delete(0,END)
+                            prd_r10c5.insert(0,str(float(tb_slt_r10[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr10= StringVar()
                         prd_r10c1 = ttk.Combobox(frm_mast1,textvariable=cmbr10,width=18,font=('Calibri 16'))
-                        prd_r10c1['values'] = ('Edit','Delete')
+                        prd_r10c1['values'] = prd_slct
+                        prd_r10c1.bind('<<ComboboxSelected>>',sltd_fun_r10)
                         win_inv1 = frm_mast1.create_window(120, 640, anchor="nw", window=prd_r10c1, tag=("cmb_action"))
 
 
                         prd_r10c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,640, anchor="nw", window=prd_r10c2,)
 
-                        prd_r10c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r10c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r10,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 655, anchor="center", window=prd_r10c3,)
 
                         prd_r10c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -15008,16 +15461,61 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,640, anchor="nw", window=prd_r10c5,)
 
                         #----------------------------------------------------------------------row 11
+                        def sltd_fun_r11(event):
+                            cmb_slt_crt_r11='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r11_vald=(dtl_cmp_pro[0],cmbr11.get(),)
+                            fbcursor.execute(cmb_slt_crt_r11, cmb_slt_crt_r11_vald)
+                            tb_slt_r11=fbcursor.fetchone()
+
+                            prd_r11c2.delete(0,END)
+                            prd_r11c2.insert(0,str(tb_slt_r11[2]))
+
+                            prd_r11c4.delete(0,END)
+                            prd_r11c4.insert(0,"$"+str(tb_slt_r11[3]))
+
+                            spc_val=prd_r11c3.get()
+                            prd_r11c5.delete(0,END)
+                            prd_r11c5.insert(0,str(float(tb_slt_r11[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_r11():
+                            cmb_slt_crt_r11='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r11_vald=(dtl_cmp_pro[0],cmbr11.get(),)
+                            fbcursor.execute(cmb_slt_crt_r11, cmb_slt_crt_r11_vald)
+                            tb_slt_r11=fbcursor.fetchone()
+
+                            spc_val=prd_r11c3.get()
+                            prd_r11c5.delete(0,END)
+                            prd_r11c5.insert(0,str(float(tb_slt_r11[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr11= StringVar()
                         prd_r11c1 = ttk.Combobox(frm_mast1,textvariable=cmbr11,width=18,font=('Calibri 16'))
-                        prd_r11c1['values'] = ('Edit','Delete')
+                        prd_r11c1['values'] = prd_slct
+                        prd_r11c1.bind('<<ComboboxSelected>>',sltd_fun_r11)
                         win_inv1 = frm_mast1.create_window(120, 685, anchor="nw", window=prd_r11c1, tag=("cmb_action"))
 
 
                         prd_r11c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,685, anchor="nw", window=prd_r11c2,)
 
-                        prd_r11c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r11c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r11,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 700, anchor="center", window=prd_r11c3,)
 
                         prd_r11c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -15027,16 +15525,62 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,685, anchor="nw", window=prd_r11c5,)
 
                         #----------------------------------------------------------------------row 2
+                        def sltd_fun_r12(event):
+                            cmb_slt_crt_r12='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r12_vald=(dtl_cmp_pro[0],cmbr12.get(),)
+                            fbcursor.execute(cmb_slt_crt_r12, cmb_slt_crt_r12_vald)
+                            tb_slt_r12=fbcursor.fetchone()
+
+                            prd_r12c2.delete(0,END)
+                            prd_r12c2.insert(0,str(tb_slt_r12[2]))
+
+                            prd_r12c4.delete(0,END)
+                            prd_r12c4.insert(0,"$"+str(tb_slt_r12[3]))
+
+                            spc_val=prd_r12c3.get()
+                            prd_r12c5.delete(0,END)
+                            prd_r12c5.insert(0,str(float(tb_slt_r12[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_r12():
+                            cmb_slt_crt_r12='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r12_vald=(dtl_cmp_pro[0],cmbr12.get(),)
+                            fbcursor.execute(cmb_slt_crt_r12, cmb_slt_crt_r12_vald)
+                            tb_slt_r12=fbcursor.fetchone()
+
+                            spc_val=prd_r12c3.get()
+                            prd_r12c5.delete(0,END)
+                            prd_r12c5.insert(0,str(float(tb_slt_r12[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
+
                         cmbr12= StringVar()
                         prd_r12c1 = ttk.Combobox(frm_mast1,textvariable=cmbr12,width=18,font=('Calibri 16'))
-                        prd_r12c1['values'] = ('Edit','Delete')
+                        prd_r12c1['values'] = prd_slct
+                        prd_r12c1.bind('<<ComboboxSelected>>',sltd_fun_r12)
                         win_inv1 = frm_mast1.create_window(120, 730, anchor="nw", window=prd_r12c1, tag=("cmb_action"))
 
 
                         prd_r12c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,730, anchor="nw", window=prd_r12c2,)
 
-                        prd_r12c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r12c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r12,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 745, anchor="center", window=prd_r12c3,)
 
                         prd_r12c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -15046,16 +15590,61 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,730, anchor="nw", window=prd_r12c5,)
 
                         #----------------------------------------------------------------------row 
+                        def sltd_fun_r13(event):
+                            cmb_slt_crt_r13='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r13_vald=(dtl_cmp_pro[0],cmbr13.get(),)
+                            fbcursor.execute(cmb_slt_crt_r13, cmb_slt_crt_r13_vald)
+                            tb_slt_r13=fbcursor.fetchone()
+
+                            prd_r13c2.delete(0,END)
+                            prd_r13c2.insert(0,str(tb_slt_r13[2]))
+
+                            prd_r13c4.delete(0,END)
+                            prd_r13c4.insert(0,"$"+str(tb_slt_r13[3]))
+
+                            spc_val=prd_r13c3.get()
+                            prd_r13c5.delete(0,END)
+                            prd_r13c5.insert(0,str(float(tb_slt_r13[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())+int(prd_r13c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())+float(prd_r13c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_r13():
+                            cmb_slt_crt_r13='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r13_vald=(dtl_cmp_pro[0],cmbr13.get(),)
+                            fbcursor.execute(cmb_slt_crt_r13, cmb_slt_crt_r13_vald)
+                            tb_slt_r13=fbcursor.fetchone()
+
+                            spc_val=prd_r13c3.get()
+                            prd_r13c5.delete(0,END)
+                            prd_r13c5.insert(0,str(float(tb_slt_r13[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())+int(prd_r13c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())+float(prd_r13c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr13= StringVar()
                         prd_r13c1 = ttk.Combobox(frm_mast1,textvariable=cmbr13,width=18,font=('Calibri 16'))
-                        prd_r13c1['values'] = ('Edit','Delete')
+                        prd_r13c1['values'] = prd_slct
+                        prd_r13c1.bind('<<ComboboxSelected>>',sltd_fun_r13)
                         win_inv1 = frm_mast1.create_window(120, 775, anchor="nw", window=prd_r13c1, tag=("cmb_action"))
 
 
                         prd_r13c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,775, anchor="nw", window=prd_r13c2,)
 
-                        prd_r13c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r13c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r13,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 790, anchor="center", window=prd_r13c3,)
 
                         prd_r13c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -15065,16 +15654,62 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,775, anchor="nw", window=prd_r13c5,)
 
                         #----------------------------------------------------------------------row 4
+                        def sltd_fun_r14(event):
+                            cmb_slt_crt_r14='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r14_vald=(dtl_cmp_pro[0],cmbr14.get(),)
+                            fbcursor.execute(cmb_slt_crt_r14, cmb_slt_crt_r14_vald)
+                            tb_slt_r14=fbcursor.fetchone()
+
+                            prd_r14c2.delete(0,END)
+                            prd_r14c2.insert(0,str(tb_slt_r14[2]))
+
+                            prd_r14c4.delete(0,END)
+                            prd_r14c4.insert(0,"$"+str(tb_slt_r14[3]))
+
+                            spc_val=prd_r14c3.get()
+                            prd_r14c5.delete(0,END)
+                            prd_r14c5.insert(0,str(float(tb_slt_r14[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())+int(prd_r13c3.get())+int(prd_r14c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())+float(prd_r13c5.get())+float(prd_r14c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+                            
+
+                        def spin_amnt_prd_r14():
+                            cmb_slt_crt_r14='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r14_vald=(dtl_cmp_pro[0],cmbr14.get(),)
+                            fbcursor.execute(cmb_slt_crt_r14, cmb_slt_crt_r14_vald)
+                            tb_slt_r14=fbcursor.fetchone()
+
+                            spc_val=prd_r14c3.get()
+                            prd_r14c5.delete(0,END)
+                            prd_r14c5.insert(0,str(float(tb_slt_r14[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())+int(prd_r13c3.get())+int(prd_r14c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())+float(prd_r13c5.get())+float(prd_r14c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+
                         cmbr14= StringVar()
                         prd_r14c1 = ttk.Combobox(frm_mast1,textvariable=cmbr14,width=18,font=('Calibri 16'))
-                        prd_r14c1['values'] = ('Edit','Delete')
+                        prd_r14c1['values'] = prd_slct
+                        prd_r14c1.bind('<<ComboboxSelected>>',sltd_fun_r14)
                         win_inv1 = frm_mast1.create_window(120, 820, anchor="nw", window=prd_r14c1, tag=("cmb_action"))
 
 
                         prd_r14c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,820, anchor="nw", window=prd_r14c2,)
 
-                        prd_r14c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r14c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r14,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 835, anchor="center", window=prd_r14c3,)
 
                         prd_r14c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -15084,16 +15719,61 @@ def main_sign_in():
                         win_inv1 = frm_mast1.create_window(825,820, anchor="nw", window=prd_r14c5,)
 
                         #----------------------------------------------------------------------row 5
+                        def sltd_fun_r15(event):
+                            cmb_slt_crt_r15='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r15_vald=(dtl_cmp_pro[0],cmbr15.get(),)
+                            fbcursor.execute(cmb_slt_crt_r15, cmb_slt_crt_r15_vald)
+                            tb_slt_r15=fbcursor.fetchone()
+
+                            prd_r15c2.delete(0,END)
+                            prd_r15c2.insert(0,str(tb_slt_r15[2]))
+
+                            prd_r15c4.delete(0,END)
+                            prd_r15c4.insert(0,"$"+str(tb_slt_r15[3]))
+
+                            spc_val=prd_r15c3.get()
+                            prd_r15c5.delete(0,END)
+                            prd_r15c5.insert(0,str(float(tb_slt_r15[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())+int(prd_r13c3.get())+int(prd_r14c3.get())+int(prd_r15c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())+float(prd_r13c5.get())+float(prd_r14c5.get())+float(prd_r15c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+                            
+                            
+
+                        def spin_amnt_prd_r15():
+                            cmb_slt_crt_r15='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r15_vald=(dtl_cmp_pro[0],cmbr15.get(),)
+                            fbcursor.execute(cmb_slt_crt_r15, cmb_slt_crt_r15_vald)
+                            tb_slt_r15=fbcursor.fetchone()
+
+                            spc_val=prd_r15c3.get()
+                            prd_r15c5.delete(0,END)
+                            prd_r15c5.insert(0,str(float(tb_slt_r15[3])*float(spc_val)))
+
+                            prd_r16c3.delete(0,END)
+                            sum_qty=int(prd_r1c3.get())+int(prd_r2c3.get())+int(prd_r3c3.get())+int(prd_r4c3.get())+int(prd_r5c3.get())+int(prd_r6c3.get())+int(prd_r7c3.get())+int(prd_r8c3.get())+int(prd_r9c3.get())+int(prd_r10c3.get())+int(prd_r11c3.get())+int(prd_r12c3.get())+int(prd_r13c3.get())+int(prd_r14c3.get())+int(prd_r15c3.get())
+                            prd_r16c3.insert(0,str(sum_qty))
+
+                            prd_r16c5.delete(0,END)
+                            sum_prd=float(prd_r1c5.get())+float(prd_r2c5.get())+float(prd_r3c5.get())+float(prd_r4c5.get())+float(prd_r5c5.get())+float(prd_r6c5.get())+float(prd_r7c5.get())+float(prd_r8c5.get())+float(prd_r9c5.get())+float(prd_r10c5.get())+float(prd_r11c5.get())+float(prd_r12c5.get())+float(prd_r13c5.get())+float(prd_r14c5.get())+float(prd_r15c5.get())
+                            prd_r16c5.insert(0,"$"+str(sum_prd))
+
                         cmbr15= StringVar()
                         prd_r15c1 = ttk.Combobox(frm_mast1,textvariable=cmbr15,width=18,font=('Calibri 16'))
-                        prd_r15c1['values'] = ('Edit','Delete')
+                        prd_r15c1['values'] = prd_slct
+                        prd_r15c1.bind('<<ComboboxSelected>>',sltd_fun_r15)
                         win_inv1 = frm_mast1.create_window(120, 865, anchor="nw", window=prd_r15c1, tag=("cmb_action"))
 
 
                         prd_r15c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(350,865, anchor="nw", window=prd_r15c2,)
 
-                        prd_r15c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r15c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r15,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 880, anchor="center", window=prd_r15c3,)
 
                         prd_r15c4 = Entry(frm_mast1, width=12, font=('Calibri 16'))
@@ -15102,7 +15782,7 @@ def main_sign_in():
                         prd_r15c5 = Entry(frm_mast1, width=15, font=('Calibri 16'))
                         win_inv1 = frm_mast1.create_window(825,865, anchor="nw", window=prd_r15c5,)
                         #--------------------------------------------------------------------------tot
-                        prd_r16c3 = Spinbox(frm_mast1,from_=1,to=1000000,width=10, font=('Calibri 16'),borderwidth=2)
+                        prd_r16c3 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_r5,width=10, font=('Calibri 16'),borderwidth=2)
                         win_inv1 = frm_mast1.create_window(600, 925, anchor="center", window=prd_r16c3,)
 
                         prd_r16c5 = Entry(frm_mast1, width=15, font=('Calibri 16'))
@@ -15110,346 +15790,999 @@ def main_sign_in():
 
                         #3333333333333333333333333333333333333333333333333333333333333333333333second table
                         prd_ls10=Label(frm_mast1, text="Name Of Item",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1085,195, anchor="center", window=prd_ls10)
+                        win_inv1 = frm_mast1.create_window(1100,195, anchor="center", window=prd_ls10)
 
                         prd_ls11=Label(frm_mast1, text="Sku",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1265,195, anchor="center", window=prd_ls11)
+                        win_inv1 = frm_mast1.create_window(1305,195, anchor="center", window=prd_ls11)
 
-                        prd_ls12=Label(frm_mast1, text="% of Cost\nallocation",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1400,195, anchor="center", window=prd_ls12)
 
                         prd_ls12=Label(frm_mast1, text="Quantity",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1523,195, anchor="center", window=prd_ls12)
+                        win_inv1 = frm_mast1.create_window(1480,195, anchor="center", window=prd_ls12)
 
                         prd_ls13=Label(frm_mast1, text="Rate",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1638,195, anchor="center", window=prd_ls13)
+                        win_inv1 = frm_mast1.create_window(1615,195, anchor="center", window=prd_ls13)
 
                         prd_ls14=Label(frm_mast1, text="Amount",bg="#213b52", fg="White", anchor="center",font=('Calibri 14 bold'))
-                        win_inv1 = frm_mast1.create_window(1790,195, anchor="center", window=prd_ls14)
+                        win_inv1 = frm_mast1.create_window(1780,195, anchor="center", window=prd_ls14)
 
                         # valuesss
                         #----------------------------------------------------------------------row 1
+                        def sltd_fun_2r1(event):
+                            cmb_slt_crt_r1='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r1_vald=(dtl_cmp_pro[0],cmbr1_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r1, cmb_slt_crt_r1_vald)
+                            tb_slt_r1=fbcursor.fetchone()
+
+                            prd_r1_2c2.delete(0,END)
+                            prd_r1_2c2.insert(0,str(tb_slt_r1[2]))
+
+                            prd_r1_2c5.delete(0,END)
+                            prd_r1_2c5.insert(0,"$"+str(tb_slt_r1[3]))
+
+                            spc_val=prd_r1_2c4.get()
+                            prd_r1_2c6.delete(0,END)
+                            prd_r1_2c6.insert(0,str(float(tb_slt_r1[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=prd_r1_2c4.get()
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=prd_r1_2c6.get()
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_2r1():
+                            cmb_slt_crt_r1='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r1_vald=(dtl_cmp_pro[0],cmbr1_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r1, cmb_slt_crt_r1_vald)
+                            tb_slt_r1=fbcursor.fetchone()
+
+                            spc_val=prd_r1_2c4.get()
+                            prd_r1_2c6.delete(0,END)
+                            prd_r1_2c6.insert(0,str(float(tb_slt_r1[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=prd_r1_2c4.get()
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=prd_r1_2c6.get()
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+
                         cmbr1_2= StringVar()
-                        prd_r1_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr1_2,width=15,font=('Calibri 16'))
-                        prd_r1_2c1['values'] = ('Edit','Delete')
+                        prd_r1_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr1_2,width=18,font=('Calibri 16'))
+                        prd_r1_2c1['values'] = prd_slct
+                        prd_r1_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r1)
                         win_inv1 = frm_mast1.create_window(1000, 235, anchor="nw", window=prd_r1_2c1, tag=("cmb_action"))
 
-                        prd_r1_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,235, anchor="nw", window=prd_r1_2c2,)
+                        prd_r1_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,235, anchor="nw", window=prd_r1_2c2,)
                         
-                        prd_r1_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,235, anchor="nw", window=prd_r1_2c3,)
+                        
 
-                        prd_r1_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 250, anchor="center", window=prd_r1_2c4,)
+                        prd_r1_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r1,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 250, anchor="center", window=prd_r1_2c4,)
 
-                        prd_r1_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,235, anchor="nw", window=prd_r1_2c5,)
+                        prd_r1_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,235, anchor="nw", window=prd_r1_2c5,)
 
-                        prd_r1_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,235, anchor="nw", window=prd_r1_2c6,)
+                        prd_r1_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,235, anchor="nw", window=prd_r1_2c6,)
 
                         #----------------------------------------------------------------------row 2
+                        def sltd_fun_2r2(event):
+                            cmb_slt_crt_r2='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r2_vald=(dtl_cmp_pro[0],cmbr2_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r2, cmb_slt_crt_r2_vald)
+                            tb_slt_r2=fbcursor.fetchone()
+
+                            prd_r2_2c2.delete(0,END)
+                            prd_r2_2c2.insert(0,str(tb_slt_r2[2]))
+
+                            prd_r2_2c5.delete(0,END)
+                            prd_r2_2c5.insert(0,"$"+str(tb_slt_r2[3]))
+
+                            spc_val=prd_r2_2c4.get()
+                            prd_r2_2c6.delete(0,END)
+                            prd_r2_2c6.insert(0,str(float(tb_slt_r2[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_2r2():
+                            cmb_slt_crt_r2='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r2_vald=(dtl_cmp_pro[0],cmbr2_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r2, cmb_slt_crt_r2_vald)
+                            tb_slt_r2=fbcursor.fetchone()
+
+                            spc_val=prd_r2_2c4.get()
+                            prd_r2_2c6.delete(0,END)
+                            prd_r2_2c6.insert(0,str(float(tb_slt_r2[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr2_2= StringVar()
-                        prd_r2_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr2_2,width=15,font=('Calibri 16'))
-                        prd_r2_2c1['values'] = ('Edit','Delete')
+                        prd_r2_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr2_2,width=18,font=('Calibri 16'))
+                        prd_r2_2c1['values'] = prd_slct
+                        prd_r2_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r2)
                         win_inv1 = frm_mast1.create_window(1000, 280, anchor="nw", window=prd_r2_2c1, tag=("cmb_action"))
 
-                        prd_r2_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,280, anchor="nw", window=prd_r2_2c2,)
+                        prd_r2_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,280, anchor="nw", window=prd_r2_2c2,)
                         
-                        prd_r2_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,280, anchor="nw", window=prd_r2_2c3,)
+                        
 
-                        prd_r2_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 295, anchor="center", window=prd_r2_2c4,)
+                        prd_r2_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r2,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 295, anchor="center", window=prd_r2_2c4,)
 
-                        prd_r2_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,280, anchor="nw", window=prd_r2_2c5,)
+                        prd_r2_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,280, anchor="nw", window=prd_r2_2c5,)
 
-                        prd_r2_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,280, anchor="nw", window=prd_r2_2c6,)
+                        prd_r2_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,280, anchor="nw", window=prd_r2_2c6,)
 
                         #----------------------------------------------------------------------row 3
+                        def sltd_fun_2r3(event):
+                            cmb_slt_crt_r3='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r3_vald=(dtl_cmp_pro[0],cmbr3_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r3, cmb_slt_crt_r3_vald)
+                            tb_slt_r3=fbcursor.fetchone()
+
+                            prd_r3_2c2.delete(0,END)
+                            prd_r3_2c2.insert(0,str(tb_slt_r3[2]))
+
+                            prd_r3_2c5.delete(0,END)
+                            prd_r3_2c5.insert(0,"$"+str(tb_slt_r3[3]))
+
+                            spc_val=prd_r3_2c4.get()
+                            prd_r3_2c6.delete(0,END)
+                            prd_r3_2c6.insert(0,str(float(tb_slt_r3[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_2r3():
+                            cmb_slt_crt_r3='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r3_vald=(dtl_cmp_pro[0],cmbr3_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r3, cmb_slt_crt_r3_vald)
+                            tb_slt_r3=fbcursor.fetchone()
+
+                            spc_val=prd_r3_2c4.get()
+                            prd_r3_2c6.delete(0,END)
+                            prd_r3_2c6.insert(0,str(float(tb_slt_r3[3])*float(spc_val)))
+                            
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+                        
                         cmbr3_2= StringVar()
-                        prd_r3_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr3_2,width=15,font=('Calibri 16'))
-                        prd_r3_2c1['values'] = ('Edit','Delete')
+                        prd_r3_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr3_2,width=18,font=('Calibri 16'))
+                        prd_r3_2c1['values'] = prd_slct
+                        prd_r3_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r3)
                         win_inv1 = frm_mast1.create_window(1000, 325, anchor="nw", window=prd_r3_2c1, tag=("cmb_action"))
 
-                        prd_r3_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,325, anchor="nw", window=prd_r3_2c2,)
+                        prd_r3_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,325, anchor="nw", window=prd_r3_2c2,)
                         
-                        prd_r3_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,325, anchor="nw", window=prd_r3_2c3,)
+                        
 
-                        prd_r3_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 340, anchor="center", window=prd_r3_2c4,)
+                        prd_r3_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r3,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 340, anchor="center", window=prd_r3_2c4,)
 
-                        prd_r3_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,325, anchor="nw", window=prd_r3_2c5,)
+                        prd_r3_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,325, anchor="nw", window=prd_r3_2c5,)
 
-                        prd_r3_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,325, anchor="nw", window=prd_r3_2c6,)
+                        prd_r3_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,325, anchor="nw", window=prd_r3_2c6,)
 
                         #----------------------------------------------------------------------row 4
+                        def sltd_fun_2r4(event):
+                            cmb_slt_crt_r4='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r4_vald=(dtl_cmp_pro[0],cmbr4_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r4, cmb_slt_crt_r4_vald)
+                            tb_slt_r4=fbcursor.fetchone()
+
+                            prd_r4_2c2.delete(0,END)
+                            prd_r4_2c2.insert(0,str(tb_slt_r4[2]))
+
+                            prd_r4_2c5.delete(0,END)
+                            prd_r4_2c5.insert(0,"$"+str(tb_slt_r4[3]))
+
+                            spc_val=prd_r4_2c4.get()
+                            prd_r4_2c6.delete(0,END)
+                            prd_r4_2c6.insert(0,str(float(tb_slt_r4[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_2r4():
+                            cmb_slt_crt_r4='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r4_vald=(dtl_cmp_pro[0],cmbr4_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r4, cmb_slt_crt_r4_vald)
+                            tb_slt_r4=fbcursor.fetchone()
+
+                            spc_val=prd_r4_2c4.get()
+                            prd_r4_2c6.delete(0,END)
+                            prd_r4_2c6.insert(0,str(float(tb_slt_r4[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+
                         cmbr4_2= StringVar()
-                        prd_r4_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr4_2,width=15,font=('Calibri 16'))
-                        prd_r4_2c1['values'] = ('Edit','Delete')
+                        prd_r4_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr4_2,width=18,font=('Calibri 16'))
+                        prd_r4_2c1['values'] = prd_slct
+                        prd_r4_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r4)
                         win_inv1 = frm_mast1.create_window(1000, 370, anchor="nw", window=prd_r4_2c1, tag=("cmb_action"))
 
-                        prd_r4_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,370, anchor="nw", window=prd_r4_2c2,)
+                        prd_r4_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,370, anchor="nw", window=prd_r4_2c2,)
                         
-                        prd_r4_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,370, anchor="nw", window=prd_r4_2c3,)
 
-                        prd_r4_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 385, anchor="center", window=prd_r4_2c4,)
+                        prd_r4_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r4,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 385, anchor="center", window=prd_r4_2c4,)
 
-                        prd_r4_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,370, anchor="nw", window=prd_r4_2c5,)
+                        prd_r4_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,370, anchor="nw", window=prd_r4_2c5,)
 
-                        prd_r4_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,370, anchor="nw", window=prd_r4_2c6,)
+                        prd_r4_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,370, anchor="nw", window=prd_r4_2c6,)
 
                         #----------------------------------------------------------------------row 5
+                        def sltd_fun_2r5(event):
+                            cmb_slt_crt_r5='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r5_vald=(dtl_cmp_pro[0],cmbr5_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r5, cmb_slt_crt_r5_vald)
+                            tb_slt_r5=fbcursor.fetchone()
+
+                            prd_r5_2c2.delete(0,END)
+                            prd_r5_2c2.insert(0,str(tb_slt_r5[2]))
+
+                            prd_r5_2c5.delete(0,END)
+                            prd_r5_2c5.insert(0,"$"+str(tb_slt_r5[3]))
+
+                            spc_val=prd_r5_2c4.get()
+                            prd_r5_2c6.delete(0,END)
+                            prd_r5_2c6.insert(0,str(float(tb_slt_r5[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_2r5():
+                            cmb_slt_crt_r5='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r5_vald=(dtl_cmp_pro[0],cmbr5_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r5, cmb_slt_crt_r5_vald)
+                            tb_slt_r5=fbcursor.fetchone()
+
+                            spc_val=prd_r5_2c4.get()
+                            prd_r5_2c6.delete(0,END)
+                            prd_r5_2c6.insert(0,str(float(tb_slt_r5[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr5_2= StringVar()
-                        prd_r5_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr5_2,width=15,font=('Calibri 16'))
-                        prd_r5_2c1['values'] = ('Edit','Delete')
+                        prd_r5_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr5_2,width=18,font=('Calibri 16'))
+                        prd_r5_2c1['values'] = prd_slct
+                        prd_r5_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r5)
                         win_inv1 = frm_mast1.create_window(1000, 415, anchor="nw", window=prd_r5_2c1, tag=("cmb_action"))
 
-                        prd_r5_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,415, anchor="nw", window=prd_r5_2c2,)
+                        prd_r5_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,415, anchor="nw", window=prd_r5_2c2,)
                         
-                        prd_r5_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,415, anchor="nw", window=prd_r5_2c3,)
+                        
 
-                        prd_r5_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 430, anchor="center", window=prd_r5_2c4,)
+                        prd_r5_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r5,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 430, anchor="center", window=prd_r5_2c4,)
 
-                        prd_r5_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,415, anchor="nw", window=prd_r5_2c5,)
+                        prd_r5_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,415, anchor="nw", window=prd_r5_2c5,)
 
-                        prd_r5_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,415, anchor="nw", window=prd_r5_2c6,)
+                        prd_r5_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,415, anchor="nw", window=prd_r5_2c6,)
 
                         #----------------------------------------------------------------------row 6
+                        def sltd_fun_2r6(event):
+                            cmb_slt_crt_r6='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r6_vald=(dtl_cmp_pro[0],cmbr6_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r6, cmb_slt_crt_r6_vald)
+                            tb_slt_r6=fbcursor.fetchone()
+
+                            prd_r6_2c2.delete(0,END)
+                            prd_r6_2c2.insert(0,str(tb_slt_r6[2]))
+
+                            prd_r6_2c5.delete(0,END)
+                            prd_r6_2c5.insert(0,"$"+str(tb_slt_r6[3]))
+
+                            spc_val=prd_r6_2c4.get()
+                            prd_r6_2c6.delete(0,END)
+                            prd_r6_2c6.insert(0,str(float(tb_slt_r6[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_2r6():
+                            cmb_slt_crt_r6='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r6_vald=(dtl_cmp_pro[0],cmbr6_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r6, cmb_slt_crt_r6_vald)
+                            tb_slt_r6=fbcursor.fetchone()
+
+                            spc_val=prd_r6_2c4.get()
+                            prd_r6_2c6.delete(0,END)
+                            prd_r6_2c6.insert(0,str(float(tb_slt_r6[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr6_2= StringVar()
-                        prd_r6_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr6_2,width=15,font=('Calibri 16'))
-                        prd_r6_2c1['values'] = ('Edit','Delete')
+                        prd_r6_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr6_2,width=18,font=('Calibri 16'))
+                        prd_r6_2c1['values'] = prd_slct
+                        prd_r6_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r6)
                         win_inv1 = frm_mast1.create_window(1000, 460, anchor="nw", window=prd_r6_2c1, tag=("cmb_action"))
 
-                        prd_r6_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,460, anchor="nw", window=prd_r6_2c2,)
-                        
-                        prd_r6_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,460, anchor="nw", window=prd_r6_2c3,)
+                        prd_r6_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,460, anchor="nw", window=prd_r6_2c2,)
+              
 
-                        prd_r6_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 475, anchor="center", window=prd_r6_2c4,)
+                        prd_r6_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r6,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 475, anchor="center", window=prd_r6_2c4,)
 
-                        prd_r6_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,460, anchor="nw", window=prd_r6_2c5,)
+                        prd_r6_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,460, anchor="nw", window=prd_r6_2c5,)
 
-                        prd_r6_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,460, anchor="nw", window=prd_r6_2c6,)
+                        prd_r6_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,460, anchor="nw", window=prd_r6_2c6,)
 
                         #----------------------------------------------------------------------row 7
+                        def sltd_fun_2r7(event):
+                            cmb_slt_crt_r7='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r7_vald=(dtl_cmp_pro[0],cmbr7_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r7, cmb_slt_crt_r7_vald)
+                            tb_slt_r7=fbcursor.fetchone()
+
+                            prd_r7_2c2.delete(0,END)
+                            prd_r7_2c2.insert(0,+str(tb_slt_r7[2]))
+
+                            prd_r7_2c5.delete(0,END)
+                            prd_r7_2c5.insert(0,"$"+str(tb_slt_r7[3]))
+
+                            spc_val=prd_r7_2c4.get()
+                            prd_r7_2c6.delete(0,END)
+                            prd_r7_2c6.insert(0,str(float(tb_slt_r7[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_2r7():
+                            cmb_slt_crt_r7='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r7_vald=(dtl_cmp_pro[0],cmbr7_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r7, cmb_slt_crt_r7_vald)
+                            tb_slt_r7=fbcursor.fetchone()
+
+                            spc_val=prd_r7_2c4.get()
+                            prd_r7_2c6.delete(0,END)
+                            prd_r7_2c6.insert(0,str(float(tb_slt_r7[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr7_2= StringVar()
-                        prd_r7_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr7_2,width=15,font=('Calibri 16'))
-                        prd_r7_2c1['values'] = ('Edit','Delete')
+                        prd_r7_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr7_2,width=18,font=('Calibri 16'))
+                        prd_r7_2c1['values'] = prd_slct
+                        prd_r7_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r7)
                         win_inv1 = frm_mast1.create_window(1000, 505, anchor="nw", window=prd_r7_2c1, tag=("cmb_action"))
 
-                        prd_r7_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,505, anchor="nw", window=prd_r7_2c2,)
+                        prd_r7_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,505, anchor="nw", window=prd_r7_2c2,)
                         
-                        prd_r7_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,505, anchor="nw", window=prd_r7_2c3,)
+                       
 
-                        prd_r7_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 520, anchor="center", window=prd_r7_2c4,)
+                        prd_r7_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r7,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 520, anchor="center", window=prd_r7_2c4,)
 
-                        prd_r7_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,505, anchor="nw", window=prd_r7_2c5,)
+                        prd_r7_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,505, anchor="nw", window=prd_r7_2c5,)
 
-                        prd_r7_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,505, anchor="nw", window=prd_r7_2c6,)
+                        prd_r7_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,505, anchor="nw", window=prd_r7_2c6,)
 
                         #----------------------------------------------------------------------row 8
+                        def sltd_fun_2r8(event):
+                            cmb_slt_crt_r8='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r8_vald=(dtl_cmp_pro[0],cmbr8_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r8, cmb_slt_crt_r8_vald)
+                            tb_slt_r8=fbcursor.fetchone()
+
+                            prd_r8_2c2.delete(0,END)
+                            prd_r8_2c2.insert(0,str(tb_slt_r8[2]))
+
+                            prd_r8_2c5.delete(0,END)
+                            prd_r8_2c5.insert(0,"$"+str(tb_slt_r8[3]))
+
+                            spc_val=prd_r8_2c4.get()
+                            prd_r8_2c6.delete(0,END)
+                            prd_r8_2c6.insert(0,str(float(tb_slt_r8[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_2r8():
+                            cmb_slt_crt_r8='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r8_vald=(dtl_cmp_pro[0],cmbr8_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r8, cmb_slt_crt_r8_vald)
+                            tb_slt_r8=fbcursor.fetchone()
+
+                            spc_val=prd_r8_2c4.get()
+                            prd_r8_2c6.delete(0,END)
+                            prd_r8_2c6.insert(0,str(float(tb_slt_r8[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr8_2= StringVar()
-                        prd_r8_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr8_2,width=15,font=('Calibri 16'))
-                        prd_r8_2c1['values'] = ('Edit','Delete')
+                        prd_r8_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr8_2,width=18,font=('Calibri 16'))
+                        prd_r8_2c1['values'] = prd_slct
+                        prd_r8_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r8)
                         win_inv1 = frm_mast1.create_window(1000, 550, anchor="nw", window=prd_r8_2c1, tag=("cmb_action"))
 
-                        prd_r8_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,550, anchor="nw", window=prd_r8_2c2,)
+                        prd_r8_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,550, anchor="nw", window=prd_r8_2c2,)
                         
-                        prd_r8_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,550, anchor="nw", window=prd_r8_2c3,)
+                        
 
-                        prd_r8_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 565, anchor="center", window=prd_r8_2c4,)
+                        prd_r8_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r8,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 565, anchor="center", window=prd_r8_2c4,)
 
-                        prd_r8_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,550, anchor="nw", window=prd_r8_2c5,)
+                        prd_r8_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,550, anchor="nw", window=prd_r8_2c5,)
 
-                        prd_r8_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,550, anchor="nw", window=prd_r8_2c6,)
+                        prd_r8_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,550, anchor="nw", window=prd_r8_2c6,)
 
                         #----------------------------------------------------------------------row 8
+                        def sltd_fun_2r9(event):
+                            cmb_slt_crt_r9='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r9_vald=(dtl_cmp_pro[0],cmbr9_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r9, cmb_slt_crt_r9_vald)
+                            tb_slt_r9=fbcursor.fetchone()
+
+                            prd_r9_2c2.delete(0,END)
+                            prd_r9_2c2.insert(0,str(tb_slt_r9[2]))
+
+                            prd_r9_2c5.delete(0,END)
+                            prd_r9_2c5.insert(0,"$"+str(tb_slt_r9[3]))
+
+                            spc_val=prd_r9_2c4.get()
+                            prd_r9_2c6.delete(0,END)
+                            prd_r9_2c6.insert(0,str(float(tb_slt_r9[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_2r9():
+                            cmb_slt_crt_r9='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r9_vald=(dtl_cmp_pro[0],cmbr9_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r9, cmb_slt_crt_r9_vald)
+                            tb_slt_r9=fbcursor.fetchone()
+
+                            spc_val=prd_r9_2c4.get()
+                            prd_r9_2c6.delete(0,END)
+                            prd_r9_2c6.insert(0,str(float(tb_slt_r9[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr9_2= StringVar()
-                        prd_r9_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr9_2,width=15,font=('Calibri 16'))
-                        prd_r9_2c1['values'] = ('Edit','Delete')
+                        prd_r9_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr9_2,width=18,font=('Calibri 16'))
+                        prd_r9_2c1['values'] = prd_slct
+                        prd_r9_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r9)
                         win_inv1 = frm_mast1.create_window(1000, 595, anchor="nw", window=prd_r9_2c1, tag=("cmb_action"))
 
-                        prd_r9_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,595, anchor="nw", window=prd_r9_2c2,)
+                        prd_r9_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,595, anchor="nw", window=prd_r9_2c2,)
                         
-                        prd_r9_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,595, anchor="nw", window=prd_r9_2c3,)
+                        
 
-                        prd_r9_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 610, anchor="center", window=prd_r9_2c4,)
+                        prd_r9_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r9,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 610, anchor="center", window=prd_r9_2c4,)
 
-                        prd_r9_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,595, anchor="nw", window=prd_r9_2c5,)
+                        prd_r9_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,595, anchor="nw", window=prd_r9_2c5,)
 
-                        prd_r9_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,595, anchor="nw", window=prd_r9_2c6,)
+                        prd_r9_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,595, anchor="nw", window=prd_r9_2c6,)
 
                         #----------------------------------------------------------------------row10
+                        def sltd_fun_2r10(event):
+                            cmb_slt_crt_r10='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r10_vald=(dtl_cmp_pro[0],cmbr10_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r10, cmb_slt_crt_r10_vald)
+                            tb_slt_r10=fbcursor.fetchone()
+
+                            prd_r10_2c2.delete(0,END)
+                            prd_r10_2c2.insert(0,str(tb_slt_r10[2]))
+
+                            prd_r10_2c5.delete(0,END)
+                            prd_r10_2c5.insert(0,"$"+str(tb_slt_r10[3]))
+
+                            spc_val=prd_r10_2c4.get()
+                            prd_r10_2c6.delete(0,END)
+                            prd_r10_2c6.insert(0,str(float(tb_slt_r10[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_2r10():
+                            cmb_slt_crt_r10='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r10_vald=(dtl_cmp_pro[0],cmbr10_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r10, cmb_slt_crt_r10_vald)
+                            tb_slt_r10=fbcursor.fetchone()
+
+                            spc_val=prd_r10_2c4.get()
+                            prd_r10_2c6.delete(0,END)
+                            prd_r10_2c6.insert(0,str(float(tb_slt_r10[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
                         cmbr10_2= StringVar()
-                        prd_r10_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr10_2,width=15,font=('Calibri 16'))
-                        prd_r10_2c1['values'] = ('Edit','Delete')
+                        prd_r10_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr10_2,width=18,font=('Calibri 16'))
+                        prd_r10_2c1['values'] = prd_slct
+                        prd_r10_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r10)
                         win_inv1 = frm_mast1.create_window(1000, 640, anchor="nw", window=prd_r10_2c1, tag=("cmb_action"))
 
-                        prd_r10_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,640, anchor="nw", window=prd_r10_2c2,)
+                        prd_r10_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,640, anchor="nw", window=prd_r10_2c2,)
                         
-                        prd_r10_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,640, anchor="nw", window=prd_r10_2c3,)
+                        
 
-                        prd_r10_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 655, anchor="center", window=prd_r10_2c4,)
+                        prd_r10_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r10,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 655, anchor="center", window=prd_r10_2c4,)
 
-                        prd_r10_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,640, anchor="nw", window=prd_r10_2c5,)
+                        prd_r10_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,640, anchor="nw", window=prd_r10_2c5,)
 
-                        prd_r10_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,640, anchor="nw", window=prd_r10_2c6,)
+                        prd_r10_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,640, anchor="nw", window=prd_r10_2c6,)
 
                         #----------------------------------------------------------------------row 11
+                        def sltd_fun_2r11(event):
+                            cmb_slt_crt_r11='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r11_vald=(dtl_cmp_pro[0],cmbr11_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r11, cmb_slt_crt_r11_vald)
+                            tb_slt_r11=fbcursor.fetchone()
+
+                            prd_r11_2c2.delete(0,END)
+                            prd_r11_2c2.insert(0,str(tb_slt_r11[2]))
+
+                            prd_r11_2c5.delete(0,END)
+                            prd_r11_2c5.insert(0,"$"+str(tb_slt_r11[3]))
+
+                            spc_val=prd_r11_2c4.get()
+                            prd_r11_2c6.delete(0,END)
+                            prd_r11_2c6.insert(0,str(float(tb_slt_r11[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                            
+
+                        def spin_amnt_prd_2r11():
+                            cmb_slt_crt_r11='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r11_vald=(dtl_cmp_pro[0],cmbr11_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r11, cmb_slt_crt_r11_vald)
+                            tb_slt_r11=fbcursor.fetchone()
+
+                            spc_val=prd_r11_2c4.get()
+                            prd_r11_2c6.delete(0,END)
+                            prd_r11_2c6.insert(0,str(float(tb_slt_r11[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr11_2= StringVar()
-                        prd_r11_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr11_2,width=15,font=('Calibri 16'))
-                        prd_r11_2c1['values'] = ('Edit','Delete')
+                        prd_r11_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr11_2,width=18,font=('Calibri 16'))
+                        prd_r11_2c1['values'] = prd_slct
+                        prd_r11_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r11)
                         win_inv1 = frm_mast1.create_window(1000, 685, anchor="nw", window=prd_r11_2c1, tag=("cmb_action"))
 
-                        prd_r11_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,685, anchor="nw", window=prd_r11_2c2,)
+                        prd_r11_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,685, anchor="nw", window=prd_r11_2c2,)
                         
-                        prd_r11_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,685, anchor="nw", window=prd_r11_2c3,)
+                        
 
-                        prd_r11_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 700, anchor="center", window=prd_r11_2c4,)
+                        prd_r11_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r11,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 700, anchor="center", window=prd_r11_2c4,)
 
-                        prd_r11_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,685, anchor="nw", window=prd_r11_2c5,)
+                        prd_r11_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,685, anchor="nw", window=prd_r11_2c5,)
 
-                        prd_r11_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,685, anchor="nw", window=prd_r11_2c6,)
+                        prd_r11_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,685, anchor="nw", window=prd_r11_2c6,)
 
                         #----------------------------------------------------------------------row 6
+                        def sltd_fun_2r12(event):
+                            cmb_slt_crt_r12='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r12_vald=(dtl_cmp_pro[0],cmbr12_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r12, cmb_slt_crt_r12_vald)
+                            tb_slt_r12=fbcursor.fetchone()
+
+                            prd_r12_2c2.delete(0,END)
+                            prd_r12_2c2.insert(0,str(tb_slt_r12[2]))
+
+                            prd_r12_2c5.delete(0,END)
+                            prd_r12_2c5.insert(0,"$"+str(tb_slt_r12[3]))
+
+                            spc_val=prd_r12_2c4.get()
+                            prd_r12_2c6.delete(0,END)
+                            prd_r12_2c6.insert(0,str(float(tb_slt_r12[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_2r12():
+                            cmb_slt_crt_r12='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r12_vald=(dtl_cmp_pro[0],cmbr12_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r12, cmb_slt_crt_r12_vald)
+                            tb_slt_r12=fbcursor.fetchone()
+
+                            spc_val=prd_r12_2c4.get()
+                            prd_r12_2c6.delete(0,END)
+                            prd_r12_2c6.insert(0,str(float(tb_slt_r12[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr12_2= StringVar()
-                        prd_r12_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr12_2,width=15,font=('Calibri 16'))
-                        prd_r12_2c1['values'] = ('Edit','Delete')
+                        prd_r12_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr12_2,width=18,font=('Calibri 16'))
+                        prd_r12_2c1['values'] = prd_slct
+                        prd_r12_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r12)
                         win_inv1 = frm_mast1.create_window(1000, 730, anchor="nw", window=prd_r12_2c1, tag=("cmb_action"))
 
-                        prd_r12_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,730, anchor="nw", window=prd_r12_2c2,)
+                        prd_r12_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,730, anchor="nw", window=prd_r12_2c2,)
                         
-                        prd_r12_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,730, anchor="nw", window=prd_r12_2c3,)
+                      
 
-                        prd_r12_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 745, anchor="center", window=prd_r12_2c4,)
+                        prd_r12_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r12,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 745, anchor="center", window=prd_r12_2c4,)
 
-                        prd_r12_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,730, anchor="nw", window=prd_r12_2c5,)
+                        prd_r12_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,730, anchor="nw", window=prd_r12_2c5,)
 
-                        prd_r12_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,730, anchor="nw", window=prd_r12_2c6,)
+                        prd_r12_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,730, anchor="nw", window=prd_r12_2c6,)
 
                         #----------------------------------------------------------------------row 7
+                        def sltd_fun_2r13(event):
+                            cmb_slt_crt_r13='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r13_vald=(dtl_cmp_pro[0],cmbr13_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r13, cmb_slt_crt_r13_vald)
+                            tb_slt_r13=fbcursor.fetchone()
+
+                            prd_r13_2c2.delete(0,END)
+                            prd_r13_2c2.insert(0,str(tb_slt_r13[2]))
+
+                            prd_r13_2c5.delete(0,END)
+                            prd_r13_2c5.insert(0,"$"+str(tb_slt_r13[3]))
+
+                            spc_val=prd_r13_2c4.get()
+                            prd_r13_2c6.delete(0,END)
+                            prd_r13_2c6.insert(0,str(float(tb_slt_r13[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())+int(prd_r13_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())+float(prd_r13_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_2r13():
+                            cmb_slt_crt_r13='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r13_vald=(dtl_cmp_pro[0],cmbr13_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r13, cmb_slt_crt_r13_vald)
+                            tb_slt_r13=fbcursor.fetchone()
+
+                            spc_val=prd_r13_2c4.get()
+                            prd_r13_2c6.delete(0,END)
+                            prd_r13_2c6.insert(0,str(float(tb_slt_r13[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())+int(prd_r13_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())+float(prd_r13_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr13_2= StringVar()
-                        prd_r13_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr13_2,width=15,font=('Calibri 16'))
-                        prd_r13_2c1['values'] = ('Edit','Delete')
+                        prd_r13_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr13_2,width=18,font=('Calibri 16'))
+                        prd_r13_2c1['values'] = prd_slct
+                        prd_r13_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r13)
                         win_inv1 = frm_mast1.create_window(1000, 775, anchor="nw", window=prd_r13_2c1, tag=("cmb_action"))
 
-                        prd_r13_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,775, anchor="nw", window=prd_r13_2c2,)
+                        prd_r13_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,775, anchor="nw", window=prd_r13_2c2,)
                         
-                        prd_r13_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,775, anchor="nw", window=prd_r13_2c3,)
+                      
 
-                        prd_r13_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 790, anchor="center", window=prd_r13_2c4,)
+                        prd_r13_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r13,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 790, anchor="center", window=prd_r13_2c4,)
 
-                        prd_r13_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,775, anchor="nw", window=prd_r13_2c5,)
+                        prd_r13_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,775, anchor="nw", window=prd_r13_2c5,)
 
-                        prd_r13_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,775, anchor="nw", window=prd_r13_2c6,)
+                        prd_r13_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,775, anchor="nw", window=prd_r13_2c6,)
 
                         #----------------------------------------------------------------------row 8
+                        def sltd_fun_2r14(event):
+                            cmb_slt_crt_r14='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r14_vald=(dtl_cmp_pro[0],cmbr14_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r14, cmb_slt_crt_r14_vald)
+                            tb_slt_r14=fbcursor.fetchone()
+
+                            prd_r14_2c2.delete(0,END)
+                            prd_r14_2c2.insert(0,str(tb_slt_r14[2]))
+
+                            prd_r14_2c5.delete(0,END)
+                            prd_r14_2c5.insert(0,"$"+str(tb_slt_r14[3]))
+
+                            spc_val=prd_r14_2c4.get()
+                            prd_r14_2c6.delete(0,END)
+                            prd_r14_2c6.insert(0,str(float(tb_slt_r14[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())+int(prd_r13_2c4.get())+int(prd_r14_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())+float(prd_r13_2c6.get())+float(prd_r14_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+                            
+
+                        def spin_amnt_prd_2r14():
+                            cmb_slt_crt_r14='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r14_vald=(dtl_cmp_pro[0],cmbr14_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r14, cmb_slt_crt_r14_vald)
+                            tb_slt_r14=fbcursor.fetchone()
+
+                            spc_val=prd_r14_2c4.get()
+                            prd_r14_2c6.delete(0,END)
+                            prd_r14_2c6.insert(0,str(float(tb_slt_r14[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())+int(prd_r13_2c4.get())+int(prd_r14_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())+float(prd_r13_2c6.get())+float(prd_r14_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr14_2= StringVar()
-                        prd_r14_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr14_2,width=15,font=('Calibri 16'))
-                        prd_r14_2c1['values'] = ('Edit','Delete')
+                        prd_r14_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr14_2,width=18,font=('Calibri 16'))
+                        prd_r14_2c1['values'] = prd_slct
+                        prd_r14_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r14)
                         win_inv1 = frm_mast1.create_window(1000, 820, anchor="nw", window=prd_r14_2c1, tag=("cmb_action"))
 
-                        prd_r14_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,820, anchor="nw", window=prd_r14_2c2,)
+                        prd_r14_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,820, anchor="nw", window=prd_r14_2c2,)
                         
-                        prd_r14_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,820, anchor="nw", window=prd_r14_2c3,)
+                       
 
-                        prd_r14_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 835, anchor="center", window=prd_r14_2c4,)
+                        prd_r14_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r14,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 835, anchor="center", window=prd_r14_2c4,)
 
-                        prd_r14_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,820, anchor="nw", window=prd_r14_2c5,)
+                        prd_r14_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,820, anchor="nw", window=prd_r14_2c5,)
 
-                        prd_r14_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,820, anchor="nw", window=prd_r14_2c6,)
+                        prd_r14_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,820, anchor="nw", window=prd_r14_2c6,)
 
                         #----------------------------------------------------------------------row 8
+                        def sltd_fun_2r15(event):
+                            cmb_slt_crt_r15='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r15_vald=(dtl_cmp_pro[0],cmbr15_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r15, cmb_slt_crt_r15_vald)
+                            tb_slt_r15=fbcursor.fetchone()
+
+                            prd_r15_2c2.delete(0,END)
+                            prd_r15_2c2.insert(0,str(tb_slt_r15[2]))
+
+                            prd_r15_2c5.delete(0,END)
+                            prd_r15_2c5.insert(0,"$"+str(tb_slt_r15[3]))
+
+                            spc_val=prd_r15_2c4.get()
+                            prd_r15_2c6.delete(0,END)
+                            prd_r15_2c6.insert(0,str(float(tb_slt_r15[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())+int(prd_r13_2c4.get())+int(prd_r14_2c4.get())+int(prd_r15_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())+float(prd_r13_2c6.get())+float(prd_r14_2c6.get())+float(prd_r15_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
+                            
+
+                        def spin_amnt_prd_2r15():
+                            cmb_slt_crt_r15='select * from producttable where cid_id=%s and Pname=%s'
+                            cmb_slt_crt_r15_vald=(dtl_cmp_pro[0],cmbr15_2.get(),)
+                            fbcursor.execute(cmb_slt_crt_r15, cmb_slt_crt_r15_vald)
+                            tb_slt_r15=fbcursor.fetchone()
+
+                            spc_val=prd_r15_2c4.get()
+                            prd_r15_2c6.delete(0,END)
+                            prd_r15_2c6.insert(0,str(float(tb_slt_r15[3])*float(spc_val)))
+
+                            prd_r16_2c4.delete(0,END)
+                            sum_qty=int(prd_r1_2c4.get())+int(prd_r2_2c4.get())+int(prd_r3_2c4.get())+int(prd_r4_2c4.get())+int(prd_r5_2c4.get())+int(prd_r6_2c4.get())+int(prd_r7_2c4.get())+int(prd_r8_2c4.get())+int(prd_r9_2c4.get())+int(prd_r10_2c4.get())+int(prd_r11_2c4.get())+int(prd_r12_2c4.get())+int(prd_r13_2c4.get())+int(prd_r14_2c4.get())+int(prd_r15_2c4.get())
+                            prd_r16_2c4.insert(0,str(sum_qty))
+
+                            prd_r16_2c6.delete(0,END)
+                            sum_prd=float(prd_r1_2c6.get())+float(prd_r2_2c6.get())+float(prd_r3_2c6.get())+float(prd_r4_2c6.get())+float(prd_r5_2c6.get())+float(prd_r6_2c6.get())+float(prd_r7_2c6.get())+float(prd_r8_2c6.get())+float(prd_r9_2c6.get())+float(prd_r10_2c6.get())+float(prd_r11_2c6.get())+float(prd_r12_2c6.get())+float(prd_r13_2c6.get())+float(prd_r14_2c6.get())+float(prd_r15_2c6.get())
+                            prd_r16_2c6.insert(0,"$"+str(sum_prd))
+
                         cmbr15_2= StringVar()
-                        prd_r15_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr15_2,width=15,font=('Calibri 16'))
-                        prd_r15_2c1['values'] = ('Edit','Delete')
+                        prd_r15_2c1 = ttk.Combobox(frm_mast1,textvariable=cmbr15_2,width=18,font=('Calibri 16'))
+                        prd_r15_2c1['values'] = prd_slct
+                        prd_r15_2c1.bind('<<ComboboxSelected>>',sltd_fun_2r15)
                         win_inv1 = frm_mast1.create_window(1000, 865, anchor="nw", window=prd_r15_2c1, tag=("cmb_action"))
 
-                        prd_r15_2c2 = Entry(frm_mast1, width=12, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1195,865, anchor="nw", window=prd_r15_2c2,)
+                        prd_r15_2c2 = Entry(frm_mast1, width=15, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1230,865, anchor="nw", window=prd_r15_2c2,)
                         
-                        prd_r15_2c3 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1345,865, anchor="nw", window=prd_r15_2c3,)
 
-                        prd_r15_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 880, anchor="center", window=prd_r15_2c4,)
+                        prd_r15_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command=spin_amnt_prd_2r15,width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 880, anchor="center", window=prd_r15_2c4,)
 
-                        prd_r15_2c5 = Entry(frm_mast1, width=10, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1590,865, anchor="nw", window=prd_r15_2c5,)
+                        prd_r15_2c5 = Entry(frm_mast1, width=12, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1558,865, anchor="nw", window=prd_r15_2c5,)
 
-                        prd_r15_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,865, anchor="nw", window=prd_r15_2c6,)
+                        prd_r15_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,865, anchor="nw", window=prd_r15_2c6,)
 
                         #-------------------------------------------------------------last
+                        
 
-                        prd_r16_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,width=7, font=('Calibri 16'),borderwidth=2)
-                        win_inv1 = frm_mast1.create_window(1525, 925, anchor="center", window=prd_r16_2c4,)
+                        prd_r16_2c4 = Spinbox(frm_mast1,from_=1,to=1000000,command="spin_amnt_prd_r1",width=10, font=('Calibri 16'),borderwidth=2)
+                        win_inv1 = frm_mast1.create_window(1480, 925, anchor="center", window=prd_r16_2c4,)
 
-                        prd_r16_2c6 = Entry(frm_mast1, width=13, font=('Calibri 16'))
-                        win_inv1 = frm_mast1.create_window(1723,910, anchor="nw", window=prd_r16_2c6,)
+                        prd_r16_2c6 = Entry(frm_mast1, width=14, font=('Calibri 16'))
+                        win_inv1 = frm_mast1.create_window(1705,910, anchor="nw", window=prd_r16_2c6,)
                         
                         #------------------------------------------------------------------------wages
                         frm_prd_cret.create_line(0, 0, 0, 0,fill="gray",tag=("hr1") )#topLine hr
@@ -15480,51 +16813,178 @@ def main_sign_in():
                         wg_r1c3 = Label(frm_prd_cret, text="Amount($)",bg="#213b52", fg="White", anchor="center", font=('Calibri 16 bold'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r1c3, tag=("wg_r1c3"))
 
+                        def wages_calcu_wg_r2(event):
+                            tt_prd=prd_r16c5.get().split('$')
+                            tt_co=prd_r16_2c6.get().split('$')
+                            
+                            tot_ls=float(tt_prd[1])+float(tt_co[1])
+                   
+                            perc=wg_r2c2.get()
+                          
+                            wg_r2c3.delete(0,END)
+                            wg_r2c3.insert(0,float(tot_ls)*float(perc)/100)
+
+                            wg_r7c3.delete(0,END)
+                            wg_r7c3.insert(0,"$"+str(wg_r2c3.get()))
+
+                            tt_prd1=wg_r7c3.get().split('$')
+
+                            wg_r8c3.delete(0,END)
+                            wg_r8c3.insert(0,"$"+str(float(tot_ls)+float(tt_prd1[1])))
+
+                            qty=wg_r8c3.get().split('$')
+                            wg_r9c3.delete(0,END)
+                            wg_r9c3.insert(0,"$"+str(float(qty[1])/float(prd_qunt.get())))
+
                         #entry
                         wg_r2c1 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r2c1, tag=("wg_r2c1"))
 
                         wg_r2c2 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
+                        wg_r2c2.bind('<KeyRelease>',wages_calcu_wg_r2)
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r2c2, tag=("wg_r2c2"))
 
+                        
+
                         wg_r2c3 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
-                        win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r2c3, tag=("wg_r2c3"))
+                        win_inv1 = frm_prd_cret.create_window(0, 0,  anchor="nw", window=wg_r2c3, tag=("wg_r2c3"))
 
                         #entry2
+
+                        def wages_calcu_wg_r3(event):
+                            tt_prd=prd_r16c5.get().split('$')
+                            tt_co=prd_r16_2c6.get().split('$')
+                            
+                            tot_ls=float(tt_prd[1])+float(tt_co[1])
+                       
+                            perc=wg_r3c2.get()
+                         
+                            wg_r3c3.delete(0,END)
+                            wg_r3c3.insert(0,float(tot_ls)*float(perc)/100)
+                            wg_r7c3.delete(0,END)
+                            wg_r7c3.insert(0,"$"+str(float(wg_r2c3.get())+float(wg_r3c3.get())))
+
+                            tt_prd1=wg_r7c3.get().split('$')
+
+                            wg_r8c3.delete(0,END)
+                            wg_r8c3.insert(0,"$"+str(float(tot_ls)+float(tt_prd1[1])))
+
+                            qty=wg_r8c3.get().split('$')
+                            wg_r9c3.delete(0,END)
+                            wg_r9c3.insert(0,"$"+str(float(qty[1])/float(prd_qunt.get())))
+
                         wg_r3c1 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r3c1, tag=("wg_r3c1"))
 
                         wg_r3c2 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
+                        wg_r3c2.bind('<KeyRelease>',wages_calcu_wg_r3)
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r3c2, tag=("wg_r3c2"))
+                        
 
                         wg_r3c3 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r3c3, tag=("wg_r3c3"))
 
                         #entry3
+
+                        def wages_calcu_wg_r4(event):
+                            tt_prd=prd_r16c5.get().split('$')
+                            tt_co=prd_r16_2c6.get().split('$')
+                            
+                            tot_ls=float(tt_prd[1])+float(tt_co[1])
+                       
+                            perc=wg_r4c2.get()
+                         
+                            wg_r4c3.delete(0,END)
+                            wg_r4c3.insert(0,float(tot_ls)*float(perc)/100)
+                            wg_r7c3.delete(0,END)
+                            wg_r7c3.insert(0,"$"+str(float(wg_r2c3.get())+float(wg_r3c3.get())+float(wg_r4c3.get())))
+
+                            tt_prd1=wg_r7c3.get().split('$')
+
+                            wg_r8c3.delete(0,END)
+                            wg_r8c3.insert(0,"$"+str(float(tot_ls)+float(tt_prd1[1])))
+
+                            qty=wg_r8c3.get().split('$')
+                            wg_r9c3.delete(0,END)
+                            wg_r9c3.insert(0,"$"+str(float(qty[1])/float(prd_qunt.get())))
+
                         wg_r4c1 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r4c1, tag=("wg_r4c1"))
 
                         wg_r4c2 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
+                        wg_r4c2.bind('<KeyRelease>',wages_calcu_wg_r4)
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r4c2, tag=("wg_r4c2"))
+                        
 
                         wg_r4c3 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r4c3, tag=("wg_r4c3"))
 
                         #entry4
+                        def wages_calcu_wg_r5(event):
+                            tt_prd=prd_r16c5.get().split('$')
+                            tt_co=prd_r16_2c6.get().split('$')
+                            
+                            tot_ls=float(tt_prd[1])+float(tt_co[1])
+                       
+                            perc=wg_r5c2.get()
+                         
+                            wg_r5c3.delete(0,END)
+                            wg_r5c3.insert(0,float(tot_ls)*float(perc)/100)
+                            wg_r7c3.delete(0,END)
+                            wg_r7c3.insert(0,"$"+str(float(wg_r2c3.get())+float(wg_r3c3.get())+float(wg_r4c3.get())+float(wg_r5c3.get())))
+
+                            tt_prd1=wg_r7c3.get().split('$')
+
+                            wg_r8c3.delete(0,END)
+                            wg_r8c3.insert(0,"$"+str(float(tot_ls)+float(tt_prd1[1])))
+
+                            qty=wg_r8c3.get().split('$')
+                            wg_r9c3.delete(0,END)
+                            wg_r9c3.insert(0,"$"+str(float(qty[1])/float(prd_qunt.get())))
+
                         wg_r5c1 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r5c1, tag=("wg_r5c1"))
 
                         wg_r5c2 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
+                        wg_r5c2.bind('<KeyRelease>',wages_calcu_wg_r5)
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r5c2, tag=("wg_r5c2"))
 
                         wg_r5c3 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r5c3, tag=("wg_r5c3"))
 
                         #entry5
+
+                        def wages_calcu_wg_r6(event):
+                            tt_prd=prd_r16c5.get().split('$')
+                            tt_co=prd_r16_2c6.get().split('$')
+                            
+                            
+                            tot_ls=float(tt_prd[1])+float(tt_co[1])
+                       
+                            perc=wg_r6c2.get()
+                         
+                            wg_r6c3.delete(0,END)
+                            wg_r6c3.insert(0,float(tot_ls)*float(perc)/100)
+                            wg_r7c3.delete(0,END)
+                            wg_r7c3.insert(0,"$"+str(float(wg_r2c3.get())+float(wg_r3c3.get())+float(wg_r4c3.get())+float(wg_r5c3.get())+float(wg_r6c3.get())))
+                            tt_prd1=wg_r7c3.get().split('$')
+
+                            wg_r8c3.delete(0,END)
+                            wg_r8c3.insert(0,"$"+str(float(tot_ls)+float(tt_prd1[1])))
+
+                            qty=wg_r8c3.get().split('$')
+                            wg_r9c3.delete(0,END)
+                            wg_r9c3.insert(0,"$"+str(float(qty[1])/float(prd_qunt.get())))
+
+
+
+
+
                         wg_r6c1 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r6c1, tag=("wg_r6c1"))
 
                         wg_r6c2 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
+                        wg_r6c2.bind('<KeyRelease>',wages_calcu_wg_r6 )
                         win_inv1 = frm_prd_cret.create_window(0, 0, anchor="nw", window=wg_r6c2, tag=("wg_r6c2"))
 
                         wg_r6c3 = Entry(frm_prd_cret, width=35, font=('Calibri 16'))
@@ -15852,7 +17312,8 @@ def main_sign_in():
                             # values Section 
                             cmb1= StringVar()
                             prd_r1c1 = ttk.Combobox(frm_mast1,textvariable=cmb1,width=18,font=('Calibri 16'))
-                            prd_r1c1['values'] = ('Edit','Delete')
+                            prd_r1c1['values'] = prd_slct
+                            prd_r1c1.bind('<<ComboboxSelected>>',sltd_fun_r1)
                             win_inv1 = frm_mast1.create_window(120, 235, anchor="nw", window=prd_r1c1, tag=("cmb_action"))
 
 
